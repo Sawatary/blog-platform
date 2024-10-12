@@ -1,12 +1,129 @@
-import Article from "../Article/Article";
+import {
+  Button,
+  Tag,
+  Typography,
+  Row,
+  Col,
+  Avatar,
+  Pagination,
+  Alert,
+  Flex,
+} from "antd";
+import "@fortawesome/fontawesome-free/css/all.css";
+
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { format } from "date-fns";
+import { fetchArticles } from "../../api/api";
+import { Article } from "../../api/types";
+import styles from "./ArticleList.module.scss";
+import { CircularProgress } from "@mui/material";
+
+const { Title, Text } = Typography;
 
 const ArticleList = () => {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [liked, setLiked] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    fetchArticles(page)
+      .then((data) => {
+        setArticles(data.articles);
+        setTotalPages(Math.ceil(data.articlesCount / 5));
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setLoading(false);
+      });
+  }, [page]);
+
+  const toggleLike = () => {
+    setLiked(!liked);
+  };
+
+  if (loading)
+    return (
+      <Flex style={{ margin: "50px" }}>
+        <CircularProgress size="4rem" />
+      </Flex>
+    );
+  if (error) return <Alert message="Error" description={error} type="error" />;
+
   return (
     <>
-      <Article />
-      <Article />
-      <Article />
-      <Article />
+      {articles.map((article) => (
+        <div key={article.slug} className={styles.containerArt}>
+          <Col span={18}>
+            <div className={styles.contentArt}>
+              <Link to={`/articles/${article.slug}`}>
+                <Title level={4} style={{ marginRight: "12px" }}>
+                  {article.title}
+                </Title>
+              </Link>
+              <Button
+                onClick={toggleLike}
+                type="text"
+                icon={
+                  <span
+                    className={`${styles.like} ${liked ? styles.like__active : ""}`}
+                  >
+                    ♥
+                  </span>
+                }
+              />
+            </div>
+            <div className={styles.tagArt}>
+              <Tag>Tag-1</Tag>
+            </div>
+            <div className={styles.descriptionArt}>
+              <Text>{article.description}</Text>
+            </div>
+          </Col>
+          <Col>
+            <Row>
+              <Col>
+                <div
+                  className={styles.personInfo}
+                  style={{ textAlign: "center", marginRight: "10px" }}
+                >
+                  <Text strong>{article?.author.username}</Text>
+                  <Text type="secondary" className={styles.personDate}>
+                    {article?.createdAt &&
+                      format(new Date(article?.createdAt), "MMMM d, yyyy")}
+                  </Text>
+                </div>
+              </Col>
+              <Col>
+                <Avatar
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    marginBottom: "10px",
+                  }}
+                  src={
+                    article?.author.image || "https://via.placeholder.com/150"
+                  }
+                  alt={article?.author.username}
+                  className={styles.avatar}
+                />
+              </Col>
+            </Row>
+          </Col>
+        </div>
+      ))}
+      <Pagination
+        current={page}
+        total={totalPages * 10}
+        onChange={(page) => setPage(page)}
+        showSizeChanger={false}
+        style={{ marginTop: "20px", marginBottom: "20px" }}
+      />
     </>
   );
 };

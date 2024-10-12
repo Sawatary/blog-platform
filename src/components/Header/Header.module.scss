@@ -12,7 +12,12 @@
   height: 80px;
   background-color: #fff;
 }
-
+.navigationAuth{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 400px;
+}
 .navigation {
   display: flex;
   justify-content: center;
@@ -20,10 +25,7 @@
   margin-right: 22px;
 
   .login {
-    color: #fff;
-    padding: 10px 20px 10px 20px;
-    background-color: #1ebed3;
-    border-radius: 8px;
+    color: #000000;
     font-size: 18px;
     font-weight: 500;
   }
@@ -34,8 +36,7 @@
     border: 1px solid #2de894;
     border-radius: 8px;
     font-size: 18px;
-    a {
-      color: #2de894;
-    }
+    background-color: #2de894;
+    color: #fff;
   }
 }

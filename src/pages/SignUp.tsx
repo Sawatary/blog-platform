@@ -6,7 +6,7 @@ const { Title, Text } = Typography;
 
 const SignUp = () => {
   return (
-    <div className={styles.signInForm}>
+    <form className={styles.signInForm}>
       <Title level={3} style={{ margin: "0 0 15px 0", fontWeight: "400" }}>
         Create New Account
       </Title>
@@ -50,7 +50,7 @@ const SignUp = () => {
           </Form.Item>
         </Form.Item>
       </Form>
-    </div>
+    </form>
   );
 };
 
