@@ -1,0 +1,41 @@
+.title {
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-left: 22px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 80px;
+  background-color: #fff;
+}
+
+.navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 22px;
+
+  .login {
+    color: #fff;
+    padding: 10px 20px 10px 20px;
+    background-color: #1ebed3;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .register {
+    margin-left: 20px;
+    padding: 10px 20px 10px 20px;
+    border: 1px solid #2de894;
+    border-radius: 8px;
+    font-size: 18px;
+    a {
+      color: #2de894;
+    }
+  }
+}
