@@ -1,7 +1,7 @@
-import { Outlet } from "react-router-dom";
-import Header from "../Header/Header";
 import { Flex } from "antd";
 import { Content } from "antd/es/layout/layout";
+import { Outlet } from "react-router-dom";
+import Header from "../components/Header";
 
 function Layout() {
   return (

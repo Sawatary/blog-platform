@@ -1,23 +1,23 @@
+import "@fortawesome/fontawesome-free/css/all.css";
 import {
+  Alert,
+  Avatar,
   Button,
+  Col,
+  Flex,
+  Pagination,
+  Row,
   Tag,
   Typography,
-  Row,
-  Col,
-  Avatar,
-  Pagination,
-  Alert,
-  Flex,
 } from "antd";
-import "@fortawesome/fontawesome-free/css/all.css";
 
+import { CircularProgress } from "@mui/material";
+import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { format } from "date-fns";
-import { fetchArticles } from "../../api/api";
-import { Article } from "../../api/types";
-import styles from "./ArticleList.module.scss";
-import { CircularProgress } from "@mui/material";
+import { fetchArticles } from "../api/api";
+import { Article } from "../types/types";
+import styles from "./styles/ArticleList.module.scss";
 
 const { Title, Text } = Typography;
 

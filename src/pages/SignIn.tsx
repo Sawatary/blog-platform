@@ -1,12 +1,14 @@
 import { Button, Form, Input, Typography } from "antd";
 import { Link } from "react-router-dom";
-import styles from "./Content.module.scss";
+import BackButton from "../utils/BackButton";
+import styles from "./styles/Content.module.scss";
 
 const { Title, Text } = Typography;
 
 const SignIn = () => {
   return (
     <div className={styles.signInForm}>
+      <BackButton />
       <Title level={2} style={{ margin: "0 0 15px 0", fontWeight: "400" }}>
         Sign In
       </Title>

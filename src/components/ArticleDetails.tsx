@@ -1,13 +1,14 @@
-import { Tag, Typography, Row, Col, Avatar, Space, Flex } from "antd";
 import "@fortawesome/fontawesome-free/css/all.css";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useEffect, useState } from "react";
-import styles from "./ArticleDetails.module.scss";
-import { useParams } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
+import { Avatar, Col, Flex, Row, Space, Tag, Typography } from "antd";
 import { format } from "date-fns";
-import { Article } from "../../api/types";
-import { fetchArticleBySlug } from "../../api/api";
+import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import { useParams } from "react-router-dom";
+import { fetchArticleBySlug } from "../api/api";
+import { Article } from "../types/types";
+import BackButton from "../utils/BackButton";
+import styles from "./styles/ArticleDetails.module.scss";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -53,6 +54,7 @@ const ArticleDetails = () => {
 
   return (
     <div className={styles.articleContainer}>
+      <BackButton />
       <Flex justify="space-between" align="start">
         <Col span={18}>
           <Space direction="vertical">

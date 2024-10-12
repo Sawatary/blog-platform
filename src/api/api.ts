@@ -1,6 +1,6 @@
 // src/api.ts
 import axios from "axios";
-import { Article, ArticlesResponse } from "./types";
+import { Article, ArticlesResponse } from "../types/types";
 
 const BASE_URL = "https://blog-platform.kata.academy/api";
 

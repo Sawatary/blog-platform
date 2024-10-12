@@ -1,11 +1,13 @@
-import { Form, Input, Button, Typography } from "antd";
-import styles from "./Content.module.scss";
+import { Button, Form, Input, Typography } from "antd";
+import BackButton from "../utils/BackButton";
+import styles from "./styles/Content.module.scss";
 
 const { Title } = Typography;
 
 const CreateArticle = () => {
   return (
     <div className={styles.artCreateFrom}>
+      <BackButton />
       <Title level={2} style={{ margin: "0 0 15px 0", fontWeight: "400" }}>
         Create New Article
       </Title>

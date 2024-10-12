@@ -1,11 +1,13 @@
 import { Button, Form, Input, Typography } from "antd";
-import styles from "./Content.module.scss";
+import BackButton from "../utils/BackButton";
+import styles from "./styles/Content.module.scss";
 
 const { Title } = Typography;
 
 const EditProfile = () => {
   return (
     <div className={styles.signInForm}>
+      <BackButton />
       <Title level={2} style={{ margin: "0 0 15px 0", fontWeight: "400" }}>
         Edit Profile
       </Title>

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Avatar, Typography, Button } from "antd";
 
-import styles from "./Header.module.scss";
+import styles from "./styles/Header.module.scss";
 
 const Header = () => {
   const state = true;
@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <Link to="/">
-        <p className={styles.title}>Reword Blog</p>
+        <p className={styles.title}>Blog-Platform</p>
       </Link>
       {!state && (
         <div className={styles.navigation}>
