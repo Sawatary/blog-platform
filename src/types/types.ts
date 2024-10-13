@@ -9,6 +9,8 @@ export interface Article {
   body: string;
   description: string;
   createdAt: string;
+  tagList: string[];
+  opened?: boolean;
   author: Author;
 }
 

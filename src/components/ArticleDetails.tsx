@@ -9,12 +9,11 @@ import { fetchArticleBySlug } from "../api/api";
 import { Article } from "../types/types";
 import BackButton from "../utils/BackButton";
 import styles from "./styles/ArticleDetails.module.scss";
+import LikeButton from "../utils/LikeButton";
 
 const { Title, Text, Paragraph } = Typography;
 
 const ArticleDetails = () => {
-  const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState(12);
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,11 +38,6 @@ const ArticleDetails = () => {
       });
   }, [slug]);
 
-  const toggleLike = () => {
-    setLiked(!liked);
-    setLikes(liked ? likes - 1 : likes + 1);
-  };
-
   if (loading)
     return (
       <Flex style={{ margin: "50px" }}>
@@ -60,17 +54,36 @@ const ArticleDetails = () => {
           <Space direction="vertical">
             <div style={{ display: "flex", alignItems: "center" }}>
               <Title level={3}>{article?.title}</Title>
-              <Flex style={{ marginLeft: "20px", marginBottom: "5px" }}>
-                <span
-                  className={`${styles.likeIcon} ${liked ? styles.liked : ""}`}
-                  onClick={toggleLike}
-                >
-                  ♥
-                </span>
-                <Text className={styles.likeCount}>{likes}</Text>
+              <Flex style={{ marginLeft: "20px" }}>
+                <LikeButton />
               </Flex>
             </div>
-            <Tag>Tag1</Tag>
+            <Flex style={{ marginBottom: "20px" }}>
+              {article?.tagList &&
+                article.tagList.map((elem: string | null, list) => {
+                  if (!elem) {
+                    return null;
+                  }
+                  if (list === 7 && !article.opened) {
+                    return (
+                      <Tag
+                        key="more"
+                        title={article.tagList.slice(7).join(", ")}
+                      >
+                        + {article.tagList.length - 7} more
+                      </Tag>
+                    );
+                  }
+                  if (list > 7 && !article.opened) {
+                    return null;
+                  }
+                  return (
+                    <Tag color="blue" key={`${elem}-${list.toString()}`}>
+                      {elem.length > 15 ? `${elem.substring(0, 10)}...` : elem}
+                    </Tag>
+                  );
+                })}
+            </Flex>
             <Paragraph style={{ width: "90%", marginTop: "10px" }}>
               <ReactMarkdown>{article?.body}</ReactMarkdown>
             </Paragraph>

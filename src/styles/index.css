@@ -7,7 +7,7 @@
 }
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Inter, sans-serif;
   font-synthesis: none;
   background-color: #e8edf2;
   text-rendering: optimizeLegibility;
@@ -28,7 +28,6 @@ button {
 }
 
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
 }
 

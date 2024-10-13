@@ -7,20 +7,6 @@
   margin: 20px 0 0 0;
 }
 
-.likeIcon {
-  cursor: pointer;
-  font-size: 1.2rem;
-  transition: color 0.3s;
-}
-
-.liked {
-  color: red;
-}
-
-.likeCount {
-  margin-left: 8px;
-}
-
 .userDetails {
   text-align: center;
   .ant-avatar {

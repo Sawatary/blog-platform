@@ -2,7 +2,6 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import {
   Alert,
   Avatar,
-  Button,
   Col,
   Flex,
   Pagination,
@@ -18,6 +17,7 @@ import { Link } from "react-router-dom";
 import { fetchArticles } from "../api/api";
 import { Article } from "../types/types";
 import styles from "./styles/ArticleList.module.scss";
+import LikeButton from "../utils/LikeButton";
 
 const { Title, Text } = Typography;
 
@@ -27,7 +27,6 @@ const ArticleList = () => {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [liked, setLiked] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -42,10 +41,6 @@ const ArticleList = () => {
         setLoading(false);
       });
   }, [page]);
-
-  const toggleLike = () => {
-    setLiked(!liked);
-  };
 
   if (loading)
     return (
@@ -66,21 +61,36 @@ const ArticleList = () => {
                   {article.title}
                 </Title>
               </Link>
-              <Button
-                onClick={toggleLike}
-                type="text"
-                icon={
-                  <span
-                    className={`${styles.like} ${liked ? styles.like__active : ""}`}
-                  >
-                    ♥
-                  </span>
-                }
-              />
+              <Flex style={{ marginBottom: "10px" }}>
+                <LikeButton />
+              </Flex>
             </div>
-            <div className={styles.tagArt}>
-              <Tag>Tag-1</Tag>
-            </div>
+            <Flex style={{ marginBottom: "20px" }}>
+              {article.tagList &&
+                article.tagList.map((elem: string | null, list) => {
+                  if (!elem) {
+                    return null;
+                  }
+                  if (list === 7 && !article.opened) {
+                    return (
+                      <Tag
+                        key="more"
+                        title={article.tagList.slice(7).join(", ")}
+                      >
+                        + {article.tagList.length - 7} more
+                      </Tag>
+                    );
+                  }
+                  if (list > 7 && !article.opened) {
+                    return null;
+                  }
+                  return (
+                    <Tag color="blue" key={`${elem}-${list.toString()}`}>
+                      {elem.length > 15 ? `${elem.substring(0, 10)}...` : elem}
+                    </Tag>
+                  );
+                })}
+            </Flex>
             <div className={styles.descriptionArt}>
               <Text>{article.description}</Text>
             </div>

@@ -1,11 +1,11 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import ArticleDetails from "../components/ArticleDetails";
-import ArticleList from "../components/ArticleList";
-import CreateArticle from "../pages/CreateArticle";
-import EditProfile from "../pages/EditProfile";
-import SignIn from "../pages/SignIn";
-import SignUp from "../pages/SignUp";
-import Layout from "./Layout";
+import ArticleDetails from "./components/ArticleDetails";
+import ArticleList from "./components/ArticleList";
+import Layout from "./components/Layout";
+import CreateArticle from "./pages/CreateArticle";
+import EditProfile from "./pages/EditProfile";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 
 const App = () => {
   return (
