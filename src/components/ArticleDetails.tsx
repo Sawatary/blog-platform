@@ -18,7 +18,7 @@ const ArticleDetails = () => {
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { slug } = useParams<{ slug: string | undefined }>();
+  const { slug } = useParams<{ slug: string }>();
 
   useEffect(() => {
     if (!slug) {
@@ -70,7 +70,28 @@ const ArticleDetails = () => {
                 <Text className={styles.likeCount}>{likes}</Text>
               </Flex>
             </div>
-            <Tag>Tag1</Tag>
+            {article?.tagList &&
+              article.tagList.map((elem: string | null, i) => {
+                if (!elem) return null;
+                if (i > 5) return null;
+                if (i === 5) {
+                  return (
+                    <Tag key="more" title={article.tagList.slice(7).join(", ")}>
+                      + {article.tagList.length} more
+                    </Tag>
+                  );
+                }
+
+                return (
+                  <Tag
+                    color="blue"
+                    key={`${elem}-${i.toString()}`}
+                    title={elem.substring(5)}
+                  >
+                    {elem.length > 15 ? `${elem.substring(0, 10)}...` : elem}
+                  </Tag>
+                );
+              })}
             <Paragraph style={{ width: "90%", marginTop: "10px" }}>
               <ReactMarkdown>{article?.body}</ReactMarkdown>
             </Paragraph>

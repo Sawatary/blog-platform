@@ -79,7 +79,27 @@ const ArticleList = () => {
               />
             </div>
             <div className={styles.tagArt}>
-              <Tag>Tag-1</Tag>
+              {article?.tagList &&
+                article.tagList.map((elem: string | null, i) => {
+                  if (!elem) return null;
+                  if (i > 5) return null;
+                  if (i === 5) {
+                    return (
+                      <Tag title={article.tagList.slice(7).join(", ")}>
+                        + {article.tagList.length} more
+                      </Tag>
+                    );
+                  }
+                  return (
+                    <Tag
+                      color="blue"
+                      key={`${elem}-${i.toString()}`}
+                      title={elem?.substring(5)}
+                    >
+                      {elem.length > 15 ? `${elem.substring(0, 10)}...` : elem}
+                    </Tag>
+                  );
+                })}
             </div>
             <div className={styles.descriptionArt}>
               <Text>{article.description}</Text>
