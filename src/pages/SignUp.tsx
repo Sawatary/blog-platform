@@ -1,4 +1,4 @@
-import { Button, Form, Input, Typography } from "antd";
+import { Button, Flex, Form, Input, Typography } from "antd";
 import { Link } from "react-router-dom";
 import BackButton from "../utils/BackButton";
 import styles from "./styles/Content.module.scss";
@@ -8,7 +8,9 @@ const { Title, Text } = Typography;
 const SignUp = () => {
   return (
     <form className={styles.signInForm}>
-      <BackButton />
+      <Flex>
+        <BackButton />
+      </Flex>
       <Title level={3} style={{ margin: "0 0 15px 0", fontWeight: "400" }}>
         Create New Account
       </Title>

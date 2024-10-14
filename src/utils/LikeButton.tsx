@@ -5,12 +5,13 @@ import styles from "./styles/LikeButton.module.scss";
 const { Text } = Typography;
 
 const LikeButton = () => {
+  const DEFAULT_LIKES_COUNT = 12;
   const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState(12);
+  const [likesCount, setLikesCount] = useState(DEFAULT_LIKES_COUNT);
 
   const toggleLike = () => {
     setLiked(!liked);
-    setLikes(liked ? likes - 1 : likes + 1);
+    setLikesCount(liked ? likesCount - 1 : likesCount + 1);
   };
 
   return (
@@ -21,7 +22,7 @@ const LikeButton = () => {
       >
         ♥
       </span>
-      <Text className={styles.likeCount}>{likes}</Text>
+      <Text className={styles.likeCount}>{likesCount}</Text>
     </Flex>
   );
 };

@@ -1,14 +1,16 @@
-import "@fortawesome/fontawesome-free/css/all.css";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import CircularProgress from "@mui/material/CircularProgress";
-import { Avatar, Col, Flex, Row, Space, Tag, Typography } from "antd";
+import "@fortawesome/fontawesome-free/css/all.css";
+import ReactMarkdown from "react-markdown";
+import { Avatar, Col, Flex, Row, Space, Typography } from "antd";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
 import { useParams } from "react-router-dom";
 import { fetchArticleBySlug } from "../api/api";
 import { Article } from "../types/types";
 import BackButton from "../utils/BackButton";
 import LikeButton from "../utils/LikeButton";
+import ListTags from "../utils/ListTags";
 import styles from "./styles/ArticleDetails.module.scss";
 
 const { Text, Paragraph, Title } = Typography;
@@ -20,22 +22,24 @@ const ArticleDetails = () => {
   const { slug } = useParams<{ slug: string }>();
 
   useEffect(() => {
-    if (!slug) {
-      setLoading(false);
-      setError("Article not found.");
-      return;
-    }
-
-    setLoading(true);
-    fetchArticleBySlug(slug)
-      .then((response) => {
+    const fetchArticle = async () => {
+      if (!slug) {
+        setLoading(false);
+        setError("Article not found.");
+        return;
+      }
+      setLoading(true);
+      try {
+        const response = await fetchArticleBySlug(slug);
         setArticle(response);
-        setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error: any) {
         setError(error.message);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchArticle();
   }, [slug]);
 
   if (loading)
@@ -45,6 +49,7 @@ const ArticleDetails = () => {
       </Flex>
     );
   if (error) return <p>Error: {error}</p>;
+  if (!article || !article.author) return <p>Article not found</p>;
 
   return (
     <div className={styles.articleContainer}>
@@ -60,28 +65,7 @@ const ArticleDetails = () => {
                 <LikeButton />
               </Flex>
             </div>
-            {article?.tagList &&
-              article.tagList.map((elem: string | null, i) => {
-                if (!elem) return null;
-                if (i > 5) return null;
-                if (i === 5) {
-                  return (
-                    <Tag key="more" title={article.tagList.slice(7).join(", ")}>
-                      + {article.tagList.length} more
-                    </Tag>
-                  );
-                }
-
-                return (
-                  <Tag
-                    color="blue"
-                    key={`${elem}-${i.toString()}`}
-                    title={elem.substring(5)}
-                  >
-                    {elem.length > 15 ? `${elem.substring(0, 10)}...` : elem}
-                  </Tag>
-                );
-              })}
+            <ListTags article={article} />
             <Paragraph style={{ width: "90%", marginTop: "10px" }}>
               <ReactMarkdown>{article?.body}</ReactMarkdown>
             </Paragraph>
