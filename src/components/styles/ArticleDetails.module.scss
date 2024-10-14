@@ -1,0 +1,33 @@
+.articleContainer {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 60%;
+  margin: 20px 0 0 0;
+}
+
+.likeIcon {
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+.liked {
+  color: red;
+}
+
+.likeCount {
+  margin-left: 8px;
+}
+
+.userDetails {
+  text-align: center;
+  .ant-avatar {
+    background-color: #f56a00;
+  }
+
+  .personDate {
+    margin-top: 5px;
+  }
+}
