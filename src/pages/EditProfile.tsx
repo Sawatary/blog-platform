@@ -1,4 +1,4 @@
-import { Button, Form, Input, Typography } from "antd";
+import { Button, Form, Input, Typography, Flex } from "antd";
 import BackButton from "../utils/BackButton";
 import styles from "./styles/Content.module.scss";
 
@@ -7,7 +7,9 @@ const { Title } = Typography;
 const EditProfile = () => {
   return (
     <div className={styles.signInForm}>
-      <BackButton />
+      <Flex>
+        <BackButton />
+      </Flex>
       <Title level={2} style={{ margin: "0 0 15px 0", fontWeight: "400" }}>
         Edit Profile
       </Title>

@@ -7,20 +7,7 @@ const BackButton = () => {
     navigate(-1);
   };
   return (
-    <Button
-      onClick={handleBack}
-      color="default"
-      variant="outlined"
-      style={{
-        position: "absolute",
-        top: "160px",
-        left: "260px",
-        border: "none",
-        width: "50px",
-        height: "50px",
-        borderRadius: "50%",
-      }}
-    >
+    <Button onClick={handleBack} color="default" variant="outlined">
       ←
     </Button>
   );

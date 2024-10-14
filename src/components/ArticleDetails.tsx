@@ -8,13 +8,12 @@ import { useParams } from "react-router-dom";
 import { fetchArticleBySlug } from "../api/api";
 import { Article } from "../types/types";
 import BackButton from "../utils/BackButton";
+import LikeButton from "../utils/LikeButton";
 import styles from "./styles/ArticleDetails.module.scss";
 
-const { Title, Text, Paragraph } = Typography;
+const { Text, Paragraph, Title } = Typography;
 
 const ArticleDetails = () => {
-  const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState(12);
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,11 +38,6 @@ const ArticleDetails = () => {
       });
   }, [slug]);
 
-  const toggleLike = () => {
-    setLiked(!liked);
-    setLikes(liked ? likes - 1 : likes + 1);
-  };
-
   if (loading)
     return (
       <Flex style={{ margin: "50px" }}>
@@ -54,20 +48,16 @@ const ArticleDetails = () => {
 
   return (
     <div className={styles.articleContainer}>
-      <BackButton />
+      <Flex align="start" style={{ marginBottom: "10px", width: "100%" }}>
+        <BackButton />
+      </Flex>
       <Flex justify="space-between" align="start">
         <Col span={18}>
           <Space direction="vertical">
             <div style={{ display: "flex", alignItems: "center" }}>
               <Title level={3}>{article?.title}</Title>
-              <Flex style={{ marginLeft: "20px", marginBottom: "5px" }}>
-                <span
-                  className={`${styles.likeIcon} ${liked ? styles.liked : ""}`}
-                  onClick={toggleLike}
-                >
-                  ♥
-                </span>
-                <Text className={styles.likeCount}>{likes}</Text>
+              <Flex style={{ marginLeft: "10px", marginBottom: "2px" }}>
+                <LikeButton />
               </Flex>
             </div>
             {article?.tagList &&
