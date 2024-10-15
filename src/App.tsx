@@ -15,8 +15,8 @@ const App = () => {
         <Route path={Paths.ARTICLE_LIST} element={<Layout />}>
           <Route path={Paths.SIGN_IN} element={<SignIn />} />
           <Route path={Paths.SIGN_UP} element={<SignUp />} />
-          <Route path={Paths.ARTICLE_DETAILS} element={<ArticleDetails />} />
           <Route index element={<ArticleList />} />
+          <Route path={Paths.ARTICLE_DETAILS} element={<ArticleDetails />} />
           <Route path={Paths.NEW_ARTICLE} element={<CreateArticle />} />
           <Route path={Paths.EDIT_PROFILE} element={<EditProfile />} />
         </Route>

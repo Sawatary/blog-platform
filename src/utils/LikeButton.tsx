@@ -20,7 +20,7 @@ const LikeButton = () => {
         className={`${styles.likeIcon} ${liked ? styles.liked : ""}`}
         onClick={toggleLike}
       >
-        ♥
+        ♡
       </span>
       <Text className={styles.likeCount}>{likesCount}</Text>
     </Flex>

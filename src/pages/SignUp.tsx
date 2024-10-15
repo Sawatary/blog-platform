@@ -40,14 +40,19 @@ const SignUp = () => {
         <Form.Item label="Password" name="password">
           <Input.Password type="password" placeholder="Password" />
         </Form.Item>
-        <Form.Item label="Repeat Password" name="password">
-          <Input.Password type="password" placeholder="Password" />
+        <Form.Item label="Repeat Password" name="repeat password">
+          <Input.Password type="password" placeholder="Repeat Password" />
         </Form.Item>
         <Form.Item>
           <Button block type="primary" htmlType="submit">
             Create
           </Button>
-          <Form.Item style={{ textAlign: "center", margin: 0 }}>
+          <Form.Item
+            style={{ textAlign: "center", margin: 0 }}
+            rules={[
+              { type: "email", message: "The input is not valid E-mail!" },
+            ]}
+          >
             <Text type="secondary" style={{ fontSize: 12 }}>
               Already have an account? <Link to="/signIn">Sign In.</Link>
             </Text>

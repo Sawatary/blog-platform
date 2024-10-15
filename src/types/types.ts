@@ -5,6 +5,7 @@ export interface Author {
 
 export interface Article {
   slug: string;
+  favoritesCount: number
   title: string;
   body: string;
   tagList: string[];
