@@ -26,9 +26,15 @@ const SignUp = () => {
         <Form.Item
           label="Username"
           name="username"
-          rules={[{ type: "email", message: "The input is not valid E-mail!" }]}
+          rules={[
+            { min: 3, message: "Minimum 3 characters" },
+            {
+              max: 20,
+              message: "Too many characters",
+            },
+          ]}
         >
-          <Input placeholder="Email address" />
+          <Input placeholder="Username" />
         </Form.Item>
         <Form.Item
           label="Email"
@@ -37,10 +43,22 @@ const SignUp = () => {
         >
           <Input placeholder="Email address" />
         </Form.Item>
-        <Form.Item label="Password" name="password">
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[
+            { min: 6, message: "Minimum 6 characters" },
+            { max: 40, message: "Too many characters" },
+            { required: true, message: "Please enter your password" },
+          ]}
+        >
           <Input.Password type="password" placeholder="Password" />
         </Form.Item>
-        <Form.Item label="Repeat Password" name="repeat password">
+        <Form.Item
+          label="Repeat Password"
+          name="repeat password"
+          rules={[{ required: true, message: "Please enter your password" }]}
+        >
           <Input.Password type="password" placeholder="Repeat Password" />
         </Form.Item>
         <Form.Item>

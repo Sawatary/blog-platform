@@ -30,7 +30,11 @@ const SignIn = () => {
         >
           <Input placeholder="Email address" />
         </Form.Item>
-        <Form.Item label="Password" name="password">
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: "Please enter your password" }]}
+        >
           <Input.Password type="password" placeholder="Password" />
         </Form.Item>
         <Form.Item>
