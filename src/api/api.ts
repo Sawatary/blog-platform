@@ -50,17 +50,47 @@ export const loginUser = async (email: string, password: string) => {
   }
 };
 
-export const fetchProtectedData = async () => {
-  const token = getCookie("token");
-  if (!token) {
-    throw new Error("No token found!");
+export const getUserProfile = async () => {
+  try {
+    const token = getCookie("token");
+    if (!token) {
+      throw new Error("No token found!");
+    }
+
+    const response = await axios.get(`${BASE_URL}/profile`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.user;
+  } catch (error: any) {
+    throw error.response?.data || new Error("Failed to fetch user profile");
   }
+};
 
-  const response = await axios.get(`${BASE_URL}/protected`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const updateUserProfile = async (profileData: {
+  username: string;
+  email: string;
+  password?: string;
+  avatar?: string;
+}) => {
+  try {
+    const token = getCookie("token");
+    if (!token) {
+      throw new Error("No token found!");
+    }
 
-  return response.data;
+    const response = await axios.put(
+      `${BASE_URL}/profile`,
+      { user: profileData },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data.user;
+  } catch (error: any) {
+    throw error.response?.data || new Error("Failed to update user profile");
+  }
 };

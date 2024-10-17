@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Form, Input, message, Typography } from "antd";
+import { Button, Flex, Form, Input, message, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { loginUser, registerUser } from "../api/api";
 import styles from "./styles/Content.module.scss";
 import { useAuth } from "../context/ContextAuth";
+import BackButton from "../utils/BackButton";
 
 const { Title, Text } = Typography;
 
@@ -36,17 +37,15 @@ const SignUp = () => {
       message.success(`Welcome, ${response.user.username}!`);
       navigate("/");
     } catch (error: any) {
-      const errorMessage = error?.username
-        ? `Username: ${error.username.join(", ")}`
-        : error?.email
-          ? `Email: ${error.email.join(", ")}`
-          : "Registration failed!";
-      message.error(errorMessage);
+      message.error(error);
     }
   };
 
   return (
-    <div className={styles.signInForm}>
+    <div className={styles.signUpForm}>
+      <Flex>
+        <BackButton />
+      </Flex>
       <Title level={3} style={{ marginBottom: 15, fontWeight: 400 }}>
         Create New Account
       </Title>
