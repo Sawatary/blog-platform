@@ -14,19 +14,17 @@ const EditProfile = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Состояния для данных профиля
-  const [profile, setProfile] = useState({
+  const [, setProfile] = useState({
     username: "",
     email: "",
     password: "",
     avatar: "",
   });
 
-  // Загружаем профиль пользователя при монтировании компонента
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        const response = await getUserProfile(); // Получаем данные профиля
+        const response = await getUserProfile();
         setProfile(response);
         form.setFieldsValue({
           username: response.username,
@@ -41,12 +39,11 @@ const EditProfile = () => {
     loadProfile();
   }, [form]);
 
-  // Обработка отправки формы
   const handleSave = async (values: any) => {
     try {
-      await updateUserProfile(values); // Обновляем данные профиля на сервере
+      await updateUserProfile(values);
       message.success("Profile updated successfully!");
-      navigate("/profile"); // Перенаправляем пользователя на страницу профиля
+      navigate("/profile");
     } catch (error: any) {
       message.error(
         error.response?.data?.message || "Failed to update profile",
