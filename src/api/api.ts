@@ -30,6 +30,8 @@ export const registerUser = async (
     const response = await axios.post(`${BASE_URL}/users`, {
       user: { username, email, password },
     });
+    const token = response.data.user.token;
+    setCookie("token", token, 7);
     return response.data;
   } catch (error: any) {
     throw error.response?.data?.errors || new Error("Registration failed!");
@@ -41,7 +43,6 @@ export const loginUser = async (email: string, password: string) => {
     const response = await axios.post(`${BASE_URL}/users/login`, {
       user: { email, password },
     });
-
     const token = response.data.user.token;
     setCookie("token", token, 7);
     return response.data;

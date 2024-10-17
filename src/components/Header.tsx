@@ -1,4 +1,4 @@
-import { Avatar, Button, Typography } from "antd";
+import { Avatar, Button, Typography, Flex } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/ContextAuth";
 
@@ -8,10 +8,9 @@ const Header = () => {
   const { user, isAuthenticated, logout } = useAuth()!;
   const navigate = useNavigate();
 
-  // Логика выхода
   const handleLogout = () => {
-    logout(); // Очищаем данные авторизации
-    navigate("/sign-in"); // Перенаправляем на страницу входа
+    logout();
+    navigate("/sign-in");
   };
 
   return (
@@ -37,16 +36,30 @@ const Header = () => {
           <Link to="/new-article">
             <Button type="primary">Create article</Button>
           </Link>
-          <Typography style={{ fontSize: "16px" }} color="black">
-            {user}
-          </Typography>
+
           <Link to="/profile">
-            <Avatar
-              style={{ width: "52px", height: "52px" }}
-              alt="Avatar"
-              src={"https://via.placeholder.com/150"}
-            />
+            <Flex>
+              <Typography
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "500",
+                  marginTop: "12px",
+                  marginRight: "10px",
+                }}
+                color="black"
+              >
+                {user}
+              </Typography>
+              <Avatar
+                style={{ width: "52px", height: "52px" }}
+                alt="Avatar"
+                src={
+                  "https://i2020.otzovik.com/2020/04/avatar/75334401.jpeg?4bdb"
+                }
+              />
+            </Flex>
           </Link>
+
           <Button variant="outlined" onClick={handleLogout}>
             Log Out
           </Button>

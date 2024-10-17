@@ -6,12 +6,13 @@ import { loginUser, registerUser } from "../api/api";
 import styles from "./styles/Content.module.scss";
 import { useAuth } from "../context/ContextAuth";
 import BackButton from "../utils/BackButton";
+import { setCookie } from "../api/cookies";
 
 const { Title, Text } = Typography;
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const auth = useAuth(); // Используем AuthContext
+  const auth = useAuth();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,19 +26,15 @@ const SignUp = () => {
     try {
       await registerUser(username, email, password);
       message.success("Account created successfully!");
-
-      // Выполняем вход после успешной регистрации
       const response = await loginUser(email, password);
-
-      // Сохраняем пользователя и токен в AuthContext
       if (auth) {
         auth.login(response.user.username, response.user.token);
+        setCookie("username", response.user.username, 7);
       }
-
       message.success(`Welcome, ${response.user.username}!`);
       navigate("/");
     } catch (error: any) {
-      message.error(error);
+      message.error(error.response?.data?.message || "Registration failed!");
     }
   };
 
@@ -52,11 +49,17 @@ const SignUp = () => {
       <Text style={{ fontSize: 14 }} type="secondary">
         Please create new account to continue
       </Text>
-      <Form onFinish={handleSignUp} layout="vertical" size="large">
+      <Form
+        onFinish={handleSignUp}
+        requiredMark={false}
+        layout="vertical"
+        size="large"
+      >
         <Form.Item
           label="Username"
           name="username"
           rules={[
+            { type: "string", required: true },
             { min: 3, message: "Minimum 3 characters" },
             { max: 20, message: "Too many characters" },
           ]}
@@ -69,7 +72,10 @@ const SignUp = () => {
         <Form.Item
           label="Email"
           name="email"
-          rules={[{ type: "email", message: "The input is not valid E-mail!" }]}
+          rules={[
+            { type: "email", message: "The input is not valid E-mail!" },
+            { required: true },
+          ]}
         >
           <Input
             placeholder="Email address"
@@ -81,6 +87,7 @@ const SignUp = () => {
           name="password"
           rules={[
             { min: 6, message: "Minimum 6 characters" },
+            { max: 40 },
             { required: true, message: "Please enter your password" },
           ]}
         >

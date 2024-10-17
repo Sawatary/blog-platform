@@ -1,9 +1,7 @@
-
 export interface Author {
   username: string;
   image: string;
 }
-
 export interface Article {
   slug: string;
   favoritesCount: number;
@@ -19,11 +17,16 @@ export interface ArticlesResponse {
   articlesCount: number;
 }
 export interface UserApiResponse {
-  user: {
-    email: string;
-    token: string;
-    username: string;
-    bio: string;
-    image: string | null;
-  };
+  email: string;
+  password: string;
+  token: string;
+  username: string;
+  bio: string;
+  image: string | null;
+}
+export interface AuthContextType {
+  user: string | null;
+  isAuthenticated: boolean;
+  login: (username: string, token: string) => void;
+  logout: () => void;
 }

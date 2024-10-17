@@ -5,6 +5,8 @@ import { loginUser } from "../api/api";
 import { useAuth } from "../context/ContextAuth";
 import BackButton from "../utils/BackButton";
 import styles from "./styles/Content.module.scss";
+import { setCookie } from "../api/cookies";
+import { UserApiResponse } from "../types/types";
 
 const { Title, Text } = Typography;
 
@@ -12,11 +14,12 @@ const SignIn = () => {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  const handleSignIn = async (values: { email: string; password: string }) => {
+  const handleSignIn = async (values: UserApiResponse) => {
     try {
       const response = await loginUser(values.email, values.password);
       if (auth) {
-        auth.login(response.user.username, response.user.token); // Вызов login через контекст
+        auth.login(response.user.username, response.user.token);
+        setCookie("username", response.user.username, 7);
       }
       message.success(`Welcome, ${response.user.username}!`);
       navigate("/");
@@ -24,6 +27,7 @@ const SignIn = () => {
       message.error(error.response?.data?.message || "Login failed!");
     }
   };
+
   return (
     <div className={styles.signInForm}>
       <Flex>
