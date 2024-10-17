@@ -44,7 +44,6 @@ const ArticleList = () => {
     );
 
   if (error) return <Alert message="Error" description={error} type="error" />;
-
   return (
     <>
       {articles.map((article) => (

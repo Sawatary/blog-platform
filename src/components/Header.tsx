@@ -1,18 +1,25 @@
+import { Avatar, Button, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { Avatar, Typography, Button } from "antd";
+import { useAuth } from "../context/ContextAuth";
 
 import styles from "./styles/Header.module.scss";
 
 const Header = () => {
-  const state = false;
-
+  const { user, isAuthenticated, logout } = useAuth()!;
   const navigate = useNavigate();
+
+  // Логика выхода
+  const handleLogout = () => {
+    logout(); // Очищаем данные авторизации
+    navigate("/sign-in"); // Перенаправляем на страницу входа
+  };
+
   return (
     <header className={styles.header}>
       <Link to="/">
         <p className={styles.title}>Blog-Platform</p>
       </Link>
-      {!state && (
+      {!isAuthenticated && (
         <div className={styles.navigation}>
           <button className={styles.login} onClick={() => navigate("/sign-in")}>
             Sign in
@@ -25,13 +32,13 @@ const Header = () => {
           </button>
         </div>
       )}
-      {state && (
+      {isAuthenticated && (
         <div className={styles.navigationAuth}>
           <Link to="/new-article">
             <Button type="primary">Create article</Button>
           </Link>
           <Typography style={{ fontSize: "16px" }} color="black">
-            John Doe
+            {user}
           </Typography>
           <Link to="/profile">
             <Avatar
@@ -40,7 +47,9 @@ const Header = () => {
               src={"https://via.placeholder.com/150"}
             />
           </Link>
-          <Button variant="outlined">Log Out</Button>
+          <Button variant="outlined" onClick={handleLogout}>
+            Log Out
+          </Button>
         </div>
       )}
     </header>

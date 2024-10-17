@@ -1,3 +1,4 @@
+
 export interface Author {
   username: string;
   image: string;
@@ -5,7 +6,7 @@ export interface Author {
 
 export interface Article {
   slug: string;
-  favoritesCount: number
+  favoritesCount: number;
   title: string;
   body: string;
   tagList: string[];
@@ -13,8 +14,16 @@ export interface Article {
   createdAt: string;
   author: Author;
 }
-
 export interface ArticlesResponse {
   articles: Article[];
   articlesCount: number;
+}
+export interface UserApiResponse {
+  user: {
+    email: string;
+    token: string;
+    username: string;
+    bio: string;
+    image: string | null;
+  };
 }

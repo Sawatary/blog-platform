@@ -1,6 +1,7 @@
-// src/api.ts
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import { Article, ArticlesResponse } from "../types/types";
+import { getCookie, setCookie } from "./cookies";
 
 const BASE_URL = "https://blog-platform.kata.academy/api";
 
@@ -14,7 +15,52 @@ export const fetchArticles = async (
   );
   return response.data;
 };
+
 export const fetchArticleBySlug = async (slug: string): Promise<Article> => {
   const response = await axios.get(`${BASE_URL}/articles/${slug}`);
   return response.data.article;
+};
+
+export const registerUser = async (
+  username: string,
+  email: string,
+  password: string,
+) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/users`, {
+      user: { username, email, password },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data?.errors || new Error("Registration failed!");
+  }
+};
+
+export const loginUser = async (email: string, password: string) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/users/login`, {
+      user: { email, password },
+    });
+
+    const token = response.data.user.token;
+    setCookie("token", token, 7);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data?.errors || new Error("Login failed!");
+  }
+};
+
+export const fetchProtectedData = async () => {
+  const token = getCookie("token");
+  if (!token) {
+    throw new Error("No token found!");
+  }
+
+  const response = await axios.get(`${BASE_URL}/protected`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
 };

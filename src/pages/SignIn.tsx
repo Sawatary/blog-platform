@@ -1,11 +1,29 @@
-import { Button, Flex, Form, Input, Typography } from "antd";
-import { Link } from "react-router-dom";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Button, Flex, Form, Input, message, Typography } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../api/api";
+import { useAuth } from "../context/ContextAuth";
 import BackButton from "../utils/BackButton";
 import styles from "./styles/Content.module.scss";
 
 const { Title, Text } = Typography;
 
 const SignIn = () => {
+  const navigate = useNavigate();
+  const auth = useAuth();
+
+  const handleSignIn = async (values: { email: string; password: string }) => {
+    try {
+      const response = await loginUser(values.email, values.password);
+      if (auth) {
+        auth.login(response.user.username, response.user.token); // Вызов login через контекст
+      }
+      message.success(`Welcome, ${response.user.username}!`);
+      navigate("/");
+    } catch (error: any) {
+      message.error(error.response?.data?.message || "Login failed!");
+    }
+  };
   return (
     <div className={styles.signInForm}>
       <Flex>
@@ -22,6 +40,7 @@ const SignIn = () => {
         name="login"
         style={{ width: "min(24rem, 80vw)" }}
         size="large"
+        onFinish={handleSignIn}
       >
         <Form.Item
           label="Email"
@@ -43,7 +62,7 @@ const SignIn = () => {
           </Button>
           <Form.Item style={{ textAlign: "center", margin: 0 }}>
             <Text type="secondary" style={{ fontSize: 12 }}>
-              Don't have an account? <Link to="/signUp">Create Account.</Link>
+              Don't have an account? <Link to="/sign-up">Create Account.</Link>
             </Text>
           </Form.Item>
         </Form.Item>
