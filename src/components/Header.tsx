@@ -16,7 +16,7 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <Link to="/">
-        <p className={styles.title}>Blog-Platform</p>
+        <p className={styles.title}>Blog Platform</p>
       </Link>
       {!isAuthenticated && (
         <div className={styles.navigation}>

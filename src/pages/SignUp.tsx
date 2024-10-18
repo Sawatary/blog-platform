@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Flex, Form, Input, message, Typography } from "antd";
+import { Button, Checkbox, Flex, Form, Input, message, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { loginUser, registerUser } from "../api/api";
@@ -116,6 +116,22 @@ const SignUp = () => {
             placeholder="Repeat Password"
             onChange={(e) => setRepeatPassword(e.target.value)}
           />
+        </Form.Item>
+        <Form.Item
+          name="agreement"
+          valuePropName="checked"
+          rules={[
+            {
+              validator: (_, value) =>
+                value
+                  ? Promise.resolve()
+                  : Promise.reject(
+                      new Error("Confirm registration on the site"),
+                    ),
+            },
+          ]}
+        >
+          <Checkbox>I agree to disagree</Checkbox>
         </Form.Item>
         <Form.Item>
           <Button block type="primary" htmlType="submit">

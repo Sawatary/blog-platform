@@ -2,7 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import ArticleDetails from "./components/ArticleDetails";
 import ArticleList from "./components/ArticleList";
 import { Paths } from "./config/path";
-import { AuthProvider } from "./context/ContextAuth";
+import AuthProvider from "./context/ContextAuth";
 import Layout from "./layout/Layout";
 import CreateArticle from "./pages/CreateArticle";
 import EditProfile from "./pages/EditProfile";
