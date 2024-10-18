@@ -55,7 +55,11 @@ const ArticleList = () => {
                   {article.title}
                 </Title>
               </Link>
-              <LikeButton />
+              <LikeButton
+                slug={article.slug}
+                initialLikes={article.favoritesCount}
+                initialLiked={article.favorited}
+              />
             </div>
             <ListTags article={article} />
             <div className={styles.descriptionArt}>

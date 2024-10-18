@@ -62,7 +62,11 @@ const ArticleDetails = () => {
             <div style={{ display: "flex", alignItems: "center" }}>
               <Title level={3}>{article?.title}</Title>
               <Flex style={{ marginLeft: "10px", marginBottom: "2px" }}>
-                <LikeButton />
+                <LikeButton
+                  slug={article.slug}
+                  initialLikes={article.favoritesCount}
+                  initialLiked={article.favorited}
+                />
               </Flex>
             </div>
             <ListTags article={article} />

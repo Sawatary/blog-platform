@@ -95,3 +95,32 @@ export const updateUserProfile = async (profileData: {
     throw error.response?.data || new Error("Failed to update user profile");
   }
 };
+
+export const toggleLikeArticle = async (slug: string, liked: boolean) => {
+  const token = getCookie("token");
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  const url = `${BASE_URL}/articles/${slug}/favorite`;
+  try {
+    const response = liked
+      ? await axios.delete(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      : await axios.post(
+          url,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+    return response.data.article;
+  } catch (error: any) {
+    throw error.response?.data || new Error("Failed to toggle like");
+  }
+};
