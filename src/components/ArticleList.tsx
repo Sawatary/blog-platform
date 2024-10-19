@@ -1,15 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import "@fortawesome/fontawesome-free/css/all.css";
 import { CircularProgress } from "@mui/material";
-import {
-  Alert,
-  Avatar,
-  Col,
-  Flex,
-  Pagination,
-  Row,
-  Tag,
-  Typography,
-} from "antd";
+import { Alert, Avatar, Col, Flex, Pagination, Row, Typography } from "antd";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -17,6 +9,7 @@ import { fetchArticles } from "../api/api";
 import { Article } from "../types/types";
 import LikeButton from "../utils/LikeButton";
 import styles from "./styles/ArticleList.module.scss";
+import ListTags from "../utils/ListTags";
 
 const { Title, Text } = Typography;
 
@@ -28,17 +21,19 @@ const ArticleList = () => {
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    setLoading(true);
-    fetchArticles(page)
-      .then((data) => {
+    const loadArticles = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchArticles(page);
         setArticles(data.articles);
         setTotalPages(Math.ceil(data.articlesCount / 5));
-        setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error: any) {
         setError(error.message);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+    loadArticles();
   }, [page]);
 
   if (loading)
@@ -48,8 +43,7 @@ const ArticleList = () => {
       </Flex>
     );
 
-  error ? <Alert message="Error" description={error} type="error" /> : null;
-
+  if (error) return <Alert message="Error" description={error} type="error" />;
   return (
     <>
       {articles.map((article) => (
@@ -61,35 +55,13 @@ const ArticleList = () => {
                   {article.title}
                 </Title>
               </Link>
-              <LikeButton />
+              <LikeButton
+                slug={article.slug}
+                initialLikes={article.favoritesCount}
+                initialLiked={article.favorited}
+              />
             </div>
-            <div className={styles.tagArt}>
-              {article?.tagList &&
-                article.tagList.map((elem: string | null, i) => {
-                  if (!elem) return null;
-                  if (i > 5) return null;
-                  if (i === 5) {
-                    return (
-                      <Tag
-                        title={article.tagList.slice(7).join(", ")}
-                        style={{ padding: "2px 10px" }}
-                      >
-                        + {article.tagList.length} more
-                      </Tag>
-                    );
-                  }
-                  return (
-                    <Tag
-                      color="blue"
-                      key={`${elem}-${i.toString()}`}
-                      title={elem?.substring(5)}
-                      style={{ padding: "2px 10px" }}
-                    >
-                      {elem.length > 15 ? `${elem.substring(0, 10)}...` : elem}
-                    </Tag>
-                  );
-                })}
-            </div>
+            <ListTags article={article} />
             <div className={styles.descriptionArt}>
               <Text>{article.description}</Text>
             </div>

@@ -1,27 +1,49 @@
 import { useState } from "react";
-import { Flex, Typography } from "antd";
+import { Flex, message, Typography } from "antd";
 import styles from "./styles/LikeButton.module.scss";
+import { toggleLikeArticle } from "../api/api";
+import { getCookie } from "../api/cookies";
 
 const { Text } = Typography;
+interface LikeButtonProps {
+  slug: string;
+  initialLikes: number;
+  initialLiked: boolean;
+}
 
-const LikeButton = () => {
-  const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState(12);
+const LikeButton = ({ slug, initialLikes, initialLiked }: LikeButtonProps) => {
+  const [liked, setLiked] = useState(initialLiked);
+  const [likesCount, setLikesCount] = useState(initialLikes);
+  const [loading, setLoading] = useState(false);
 
-  const toggleLike = () => {
-    setLiked(!liked);
-    setLikes(liked ? likes - 1 : likes + 1);
+  const handleToggleLike = async () => {
+    const token = getCookie("token");
+    if (!token) {
+      message.warning("Пожалуйста, авторизуйтесь, чтобы поставить лайк.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const updatedArticle = await toggleLikeArticle(slug, liked);
+      setLiked(updatedArticle.favorited);
+      setLikesCount(updatedArticle.favoritesCount);
+    } catch (error) {
+      console.error("Error toggling like:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <Flex align="center" style={{ marginLeft: "10px", marginBottom: "10px" }}>
       <span
         className={`${styles.likeIcon} ${liked ? styles.liked : ""}`}
-        onClick={toggleLike}
+        onClick={handleToggleLike}
+        style={{ cursor: loading ? "not-allowed" : "pointer" }}
       >
         ♥
       </span>
-      <Text className={styles.likeCount}>{likes}</Text>
+      <Text className={styles.likeCount}>{likesCount}</Text>
     </Flex>
   );
 };

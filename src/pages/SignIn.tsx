@@ -1,14 +1,38 @@
-import { Button, Form, Input, Typography } from "antd";
-import { Link } from "react-router-dom";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Button, Flex, Form, Input, message, Typography } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../api/api";
+import { setCookie } from "../api/cookies";
+import { useAuth } from "../context/AuthProvider";
+import { UserApiResponse } from "../types/types";
 import BackButton from "../utils/BackButton";
 import styles from "./styles/Content.module.scss";
 
 const { Title, Text } = Typography;
 
 const SignIn = () => {
+  const navigate = useNavigate();
+  const auth = useAuth();
+
+  const handleSignIn = async (values: UserApiResponse) => {
+    try {
+      const response = await loginUser(values.email, values.password);
+      if (auth) {
+        auth.login(response.user.username, response.user.token);
+        setCookie("username", response.user.username, 7);
+      }
+      message.success(`Welcome, ${response.user.username}!`);
+      navigate("/");
+    } catch (error: any) {
+      message.error(error.response?.data?.message || "Login failed!");
+    }
+  };
+
   return (
     <div className={styles.signInForm}>
-      <BackButton />
+      <Flex>
+        <BackButton />
+      </Flex>
       <Title level={2} style={{ margin: "0 0 15px 0", fontWeight: "400" }}>
         Sign In
       </Title>
@@ -20,6 +44,7 @@ const SignIn = () => {
         name="login"
         style={{ width: "min(24rem, 80vw)" }}
         size="large"
+        onFinish={handleSignIn}
       >
         <Form.Item
           label="Email"
@@ -28,7 +53,11 @@ const SignIn = () => {
         >
           <Input placeholder="Email address" />
         </Form.Item>
-        <Form.Item label="Password" name="password">
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: "Please enter your password" }]}
+        >
           <Input.Password type="password" placeholder="Password" />
         </Form.Item>
         <Form.Item>
@@ -37,7 +66,7 @@ const SignIn = () => {
           </Button>
           <Form.Item style={{ textAlign: "center", margin: 0 }}>
             <Text type="secondary" style={{ fontSize: 12 }}>
-              Don't have an account? <Link to="/signUp">Create Account.</Link>
+              Don't have an account? <Link to="/sign-up">Create Account.</Link>
             </Text>
           </Form.Item>
         </Form.Item>
