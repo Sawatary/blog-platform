@@ -1,7 +1,6 @@
-import { Avatar, Button, Typography, Flex } from "antd";
+import { Avatar, Button, Flex, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/ContextAuth";
-
+import { useAuth } from "../context/AuthProvider";
 import styles from "./styles/Header.module.scss";
 
 const Header = () => {
@@ -13,6 +12,9 @@ const Header = () => {
     navigate("/sign-in");
   };
 
+  const avatarSrc = user?.image || null;
+  console.log(user?.username);
+  console.log(avatarSrc);
   return (
     <header className={styles.header}>
       <Link to="/">
@@ -31,7 +33,7 @@ const Header = () => {
           </button>
         </div>
       )}
-      {isAuthenticated && (
+      {isAuthenticated && user && (
         <div className={styles.navigationAuth}>
           <Link to="/new-article">
             <Button type="primary">Create article</Button>
@@ -48,15 +50,26 @@ const Header = () => {
                 }}
                 color="black"
               >
-                {user}
+                {user.username || "User"}
               </Typography>
-              <Avatar
-                style={{ width: "52px", height: "52px" }}
-                alt="Avatar"
-                src={
-                  "https://i2020.otzovik.com/2020/04/avatar/75334401.jpeg?4bdb"
-                }
-              />
+              {avatarSrc ? (
+                <Avatar
+                  style={{ width: "52px", height: "52px" }}
+                  alt="Avatar"
+                  src={avatarSrc}
+                />
+              ) : (
+                <div
+                  style={{
+                    width: "52px",
+                    height: "52px",
+                    backgroundColor: "#f0f0f0",
+                    borderRadius: "50%",
+                  }}
+                >
+                  <p style={{ textAlign: "center", lineHeight: "52px" }}>👤</p>
+                </div>
+              )}
             </Flex>
           </Link>
 

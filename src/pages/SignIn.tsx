@@ -2,11 +2,11 @@
 import { Button, Flex, Form, Input, message, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../api/api";
-import { useAuth } from "../context/ContextAuth";
+import { setCookie } from "../api/cookies";
+import { useAuth } from "../context/AuthProvider";
+import { UserApiResponse } from "../types/types";
 import BackButton from "../utils/BackButton";
 import styles from "./styles/Content.module.scss";
-import { setCookie } from "../api/cookies";
-import { UserApiResponse } from "../types/types";
 
 const { Title, Text } = Typography;
 

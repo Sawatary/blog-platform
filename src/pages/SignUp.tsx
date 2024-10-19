@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Checkbox, Flex, Form, Input, message, Typography } from "antd";
-import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser, registerUser } from "../api/api";
-import styles from "./styles/Content.module.scss";
-import { useAuth } from "../context/ContextAuth";
+import { useAuth } from "../context/AuthProvider";
 import BackButton from "../utils/BackButton";
-import { setCookie } from "../api/cookies";
+import styles from "./styles/Content.module.scss";
 
 const { Title, Text } = Typography;
 
@@ -28,8 +27,7 @@ const SignUp = () => {
       message.success("Account created successfully!");
       const response = await loginUser(email, password);
       if (auth) {
-        auth.login(response.user.username, response.user.token);
-        setCookie("username", response.user.username, 7);
+        auth.login(response.user, response.user.token);
       }
       message.success(`Welcome, ${response.user.username}!`);
       navigate("/");
@@ -86,6 +84,7 @@ const SignUp = () => {
           label="Password"
           name="password"
           rules={[
+            { type: "string" },
             { min: 6, message: "Minimum 6 characters" },
             { max: 40 },
             { required: true, message: "Please enter your password" },

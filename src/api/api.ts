@@ -44,7 +44,9 @@ export const loginUser = async (email: string, password: string) => {
       user: { email, password },
     });
     const token = response.data.user.token;
+    const username = response.data.user.username;
     setCookie("token", token, 7);
+    setCookie("username", username, 7);
     return response.data;
   } catch (error: any) {
     throw error.response?.data?.errors || new Error("Login failed!");
@@ -54,11 +56,11 @@ export const loginUser = async (email: string, password: string) => {
 export const getUserProfile = async () => {
   try {
     const token = getCookie("token");
+    setCookie("token", token, 7);
     if (!token) {
       throw new Error("No token found!");
     }
-
-    const response = await axios.get(`${BASE_URL}/profile`, {
+    const response = await axios.get(`${BASE_URL}/users`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -72,17 +74,16 @@ export const getUserProfile = async () => {
 export const updateUserProfile = async (profileData: {
   username: string;
   email: string;
-  password?: string;
-  avatar?: string;
+  password: string;
+  image: string;
 }) => {
   try {
     const token = getCookie("token");
     if (!token) {
       throw new Error("No token found!");
     }
-
     const response = await axios.put(
-      `${BASE_URL}/profile`,
+      `${BASE_URL}/user`,
       { user: profileData },
       {
         headers: {
@@ -90,8 +91,10 @@ export const updateUserProfile = async (profileData: {
         },
       },
     );
+    console.log("Sending token:", token);
     return response.data.user;
   } catch (error: any) {
+    console.log("Error updating profile on server:", error);
     throw error.response?.data || new Error("Failed to update user profile");
   }
 };
@@ -122,5 +125,79 @@ export const toggleLikeArticle = async (slug: string, liked: boolean) => {
     return response.data.article;
   } catch (error: any) {
     throw error.response?.data || new Error("Failed to toggle like");
+  }
+};
+
+export const createArticle = async (articleData: {
+  title: string;
+  description: string;
+  body: string;
+  tagList?: string[];
+}) => {
+  const token = getCookie("token");
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/articles`,
+      { article: articleData },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data.article;
+  } catch (error: any) {
+    throw error.response?.data || new Error("Failed to create article");
+  }
+};
+
+export const updateArticle = async (
+  slug: string,
+  articleData: {
+    title?: string;
+    description?: string;
+    body?: string;
+    tagList?: string[];
+  },
+) => {
+  const token = getCookie("token");
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/articles/${slug}`,
+      { article: articleData },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data.article;
+  } catch (error: any) {
+    throw error.response?.data || new Error("Failed to update article");
+  }
+};
+
+export const deleteArticle = async (slug: string) => {
+  const token = getCookie("token");
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  try {
+    await axios.delete(`${BASE_URL}/articles/${slug}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (error: any) {
+    throw error.response?.data || new Error("Failed to delete article");
   }
 };

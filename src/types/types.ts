@@ -23,11 +23,11 @@ export interface UserApiResponse {
   token: string;
   username: string;
   bio: string;
-  image: string | null;
+  image: string;
 }
 export interface AuthContextType {
-  user: string | null;
+  user: UserApiResponse | null;
   isAuthenticated: boolean;
-  login: (username: string, token: string) => void;
+  login: (user: UserApiResponse) => void;
   logout: () => void;
 }
