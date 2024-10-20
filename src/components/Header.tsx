@@ -13,8 +13,6 @@ const Header = () => {
   };
 
   const avatarSrc = user?.image || null;
-  console.log(user?.username);
-  console.log(avatarSrc);
   return (
     <header className={styles.header}>
       <Link to="/">

@@ -99,7 +99,16 @@ const ArticleDetails = () => {
             </Paragraph>
           </Space>
         </Col>
-        <Flex justify="end">
+        <Flex
+          justify="end"
+          style={{
+            position: "relative",
+            borderRadius: "10px",
+            padding: "10px",
+            boxShadow: "0px 4px 12px 0px #00000022",
+            bottom: "40px",
+          }}
+        >
           <Row align="middle">
             <Col style={{ textAlign: "center" }}>
               <Text strong>{article?.author.username}</Text>

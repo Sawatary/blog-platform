@@ -7,7 +7,7 @@ const BASE_URL = "https://blog-platform.kata.academy/api";
 
 export const fetchArticles = async (
   page: number,
-  limit: number = 5,
+  limit: number = 6,
 ): Promise<ArticlesResponse> => {
   const offset = (page - 1) * limit;
   const response = await axios.get<ArticlesResponse>(
@@ -91,10 +91,8 @@ export const updateUserProfile = async (profileData: {
         },
       },
     );
-    console.log("Sending token:", token);
     return response.data.user;
   } catch (error: any) {
-    console.log("Error updating profile on server:", error);
     throw error.response?.data || new Error("Failed to update user profile");
   }
 };
