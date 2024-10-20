@@ -25,12 +25,10 @@ const EditProfile = () => {
         password: values.password,
         image: values.image,
       });
-      console.log("Updated user data:", updatedUser);
       const authToken = getCookie("token");
       login(updatedUser, authToken);
     } catch (err: any) {
       setError(err.message);
-      console.log("Error updating profile:", err);
       if (err.response) {
         console.log("Server error response:", err.response.data);
       }
@@ -57,7 +55,11 @@ const EditProfile = () => {
         <Form.Item
           label="Username"
           name="username"
-          rules={[{ required: true, message: "Please input your username!" }]}
+          rules={[
+            { required: true, message: "Please input your username!" },
+            { min: 3, message: "Minimum 6 characters" },
+            { max: 20 },
+          ]}
         >
           <Input placeholder="Your username" />
         </Form.Item>

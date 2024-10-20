@@ -20,25 +20,39 @@ const Header = () => {
       </Link>
       {!isAuthenticated && (
         <div className={styles.navigation}>
-          <button className={styles.login} onClick={() => navigate("/sign-in")}>
+          <Button
+            type="primary"
+            className={styles.login}
+            onClick={() => navigate("/sign-in")}
+          >
             Sign in
-          </button>
-          <button
+          </Button>
+          <Button
+            type="dashed"
             className={styles.register}
             onClick={() => navigate("/sign-up")}
           >
             Sign up
-          </button>
+          </Button>
         </div>
       )}
       {isAuthenticated && user && (
         <div className={styles.navigationAuth}>
           <Link to="/new-article">
-            <Button type="primary">Create article</Button>
+            <Button type="primary" className={styles.btnCreate}>
+              Create article
+            </Button>
           </Link>
 
           <Link to="/profile">
-            <Flex>
+            <Flex
+              style={{
+                borderRadius: "10px",
+                width: "100%",
+                padding: "5px 15px 5px 15px",
+                margin: "0 10px 0 10px",
+              }}
+            >
               <Typography
                 style={{
                   fontSize: "16px",
@@ -52,7 +66,10 @@ const Header = () => {
               </Typography>
               {avatarSrc ? (
                 <Avatar
-                  style={{ width: "52px", height: "52px" }}
+                  style={{
+                    width: "52px",
+                    height: "52px",
+                  }}
                   alt="Avatar"
                   src={avatarSrc}
                 />
@@ -71,7 +88,11 @@ const Header = () => {
             </Flex>
           </Link>
 
-          <Button variant="outlined" onClick={handleLogout}>
+          <Button
+            className={styles.btnCreate}
+            variant="outlined"
+            onClick={handleLogout}
+          >
             Log Out
           </Button>
         </div>

@@ -35,7 +35,7 @@ const LikeButton = ({ slug, initialLikes, initialLiked }: LikeButtonProps) => {
   };
 
   return (
-    <Flex align="center" style={{ marginLeft: "10px", marginBottom: "10px" }}>
+    <Flex align="center" style={{ marginLeft: "10px", marginBottom: "10px" }} className={styles.blockLike}>
       <span
         className={`${styles.likeIcon} ${liked ? styles.liked : ""}`}
         onClick={handleToggleLike}

@@ -5,6 +5,10 @@
   margin-left: 22px;
 }
 
+.btnCreate:hover {
+  transform: scale(1.1);
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -17,7 +21,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width: 400px;
+  width: 25%;
 }
 .navigation {
   display: flex;
@@ -26,18 +30,25 @@
   margin-right: 22px;
 
   .login {
-    color: #000000;
+    z-index: 1;
+    transition: box-shadow 0.3s ease;
+    padding: 18px 25px;
     font-size: 18px;
     font-weight: 500;
   }
 
   .register {
     margin-left: 20px;
-    padding: 10px 20px;
-    border: 1px solid #2de894;
+    padding: 18px 25px;
     border-radius: 8px;
     font-size: 18px;
-    background-color: #2de894;
-    color: #fff;
   }
+}
+
+.login:hover {
+  transform: scale(1.1);
+}
+
+.register:hover {
+  transform: scale(1.1);
 }
